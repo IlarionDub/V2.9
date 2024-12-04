@@ -3,7 +3,7 @@ let users = [];
 let currentPostIndex = 0;
 let loggedInUser = null;
 const BASE_URL = 'http://localhost:3000';
- 
+
 
 
 let users1 = JSON.parse(localStorage.getItem("users1")) || [
@@ -64,7 +64,7 @@ async function addOrUpdateData(dataType, newData) {
 async function handleCredentialResponse(response) {
     try {
         // Декодуємо JWT, отримуємо дані
-        const data = jwt_decode(response.credential); 
+        const data = jwt_decode(response.credential);
         console.log("Decoded JWT data:", data);
 
         // Зберігаємо лише ім'я в loggedInUser
@@ -265,10 +265,10 @@ function loadHomePage() {
 }
 
 function loadInitialPage() {
-        const app = document.getElementById("app");
-        updateUserUI();
+    const app = document.getElementById("app");
+    updateUserUI();
 
-        app.innerHTML = `
+    app.innerHTML = `
     <header class="h11">
         <h2>Welcome to the Advanced Blog!</h2>
         <p>Choose an option to get started:</p>
@@ -283,7 +283,7 @@ function loadInitialPage() {
        
     `;
 
-        updateUserUI();
+    updateUserUI();
 
 }
 
