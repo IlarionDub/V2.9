@@ -62,18 +62,28 @@ async function addOrUpdateData(dataType, newData) {
 
 }
 async function handleCredentialResponse(response) {
-    const data = jwt_decode(response.credential); // Розшифровка JWT
-    console.log("Decoded JWT data:", data);
+    try {
+        // Декодуємо JWT, отримуємо дані
+        const data = jwt_decode(response.credential); 
+        console.log("Decoded JWT data:", data);
 
+        // Зберігаємо лише ім'я в loggedInUser
+        loggedInUser = data.name;
 
+        console.log("Logged in as:", loggedInUser);
 
-    loggedInUser = data.name;
-        
+        // Оновлюємо текст на сторінці
+        const loggedInUserSpan = document.getElementById("loggedInUser");
+        if (loggedInUserSpan) {
+            loggedInUserSpan.innerText = `Logged in as: ${loggedInUser}`;
+        }
 
+        // Викликаємо оновлення UI
+        updateUserUI();
 
-    console.log("Logged in as:", loggedInUser);
-    document.getElementById("loggedInUser").innerText = `${loggedInUser}`;
-    updateUserUI();
+    } catch (error) {
+        console.error("Error handling credential response:", error);
+    }
 }
 
 function prefillAuthor() {
