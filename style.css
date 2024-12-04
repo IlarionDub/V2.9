@@ -1,0 +1,384 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1% 0;
+    text-align: center;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin: 1% 0;
+}
+
+.h11 {
+    text-align: center;
+}
+
+nav button {
+    margin: 0 0.1em;
+    padding: 0.5% 1.5%;
+    cursor: pointer;
+    border: none;
+    background: #444;
+    color: #fff;
+    border-radius: 1%;
+}
+
+nav button:hover {
+    background: #555;
+}
+
+main {
+    padding: 2%;
+    max-width: 60%;
+    margin: auto;
+    background: #fff;
+    border-radius: 1%;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.1);
+}
+
+.main1 {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    padding: 1%;
+    max-width: 20%;
+    text-align: center;
+    background: #28a745;
+    color: #fff;
+    font-size: 90%;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main1:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 1481px) {
+    .main1 {
+        top: 20px;
+        left: calc( 1340px + (100vw - 1480px) / 2);
+        padding: 10px;
+        max-width: 100px;
+        text-align: center;
+        background: #28a745;
+        color: #fff;
+        font-size: 90%;
+        font-weight: bold;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+}
+
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 1%;
+}
+
+form input, form textarea, form button {
+    margin-top: 0.5%;
+    padding: 1%;
+    font-size: 1rem;
+    border: 0.1em solid #ccc;
+    border-radius: 0.5%;
+}
+
+form button {
+    background: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #555;
+}
+
+article {
+    margin-bottom: 2%;
+    padding: 1%;
+    border-bottom: 0.1em solid #ccc;
+}
+
+article h2 {
+    margin: 0 0 1%;
+}
+
+.comment {
+    margin-left: 0.1%;
+    padding: 1%;
+    border: 0.1em dashed #aaa;
+    border-radius: 2%;
+
+}
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1% 1.5%;
+}
+
+header h1 {
+    margin: 0;
+}
+
+
+
+div button {
+    margin: 0.5%;
+    padding: 1% 1.5%;
+    background: #007bff;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0.5%;
+
+}
+
+div button:hover {
+    background: #0056b3;
+}
+
+div button.admin {
+    margin-bottom: 1%;
+    width: 0.0001em;
+    height: 0.0001em;
+    background: rgb(246, 246, 246);
+    border: none;
+    color: #f6f6f6;
+    cursor: pointer;
+    border-radius: 0.5%;
+
+}
+
+
+
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+    margin-bottom: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.post-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1%;
+}
+
+button.edit, button.delete {
+    padding: 0.5% 1%;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 0.5%;
+}
+
+
+
+button.edit {
+    background: #007bff;
+}
+
+button.delete {
+    background: #ff0000;
+}
+
+button.edit:hover {
+    background: #0056b3;
+}
+
+button.delete:hover {
+    background: #cc0000;
+}
+
+button.cancel {
+    background: rgba(204, 0, 0, 0.78);
+}
+
+button.cancel:hover {
+    background: #cc0000;
+}
+
+
+
+
+
+
+footer button {
+    font-weight: bold; /* Виділений текст */
+    border-radius: 10px; /* Округлені краї */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Плавна тінь */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Анімація при наведенні */
+    background: rgba(0, 4, 255, 0.44);
+    cursor: pointer; /* Вказівник при наведенні */
+}
+
+footer button:hover {
+
+    background-color: rgba(0, 4, 255, 0.7); /* Світліший сірий при наведенні */
+    color: white; /* Білий текст */
+
+}
+
+footer button:disabled {
+
+    background-color: rgba(0, 4, 255, 0.27); /* Сірий фон для неактивних кнопок */
+    color: white; /* Білий текст */
+    cursor: not-allowed; /* Заборонений вказівник */
+}
+
+
+
+
+.logo {
+    width: 4.35%;
+    height: auto;
+    position: fixed;
+    top: 0.4%;
+    left: 2.1%;
+    z-index: 1000;
+    border-radius: 50%;
+    box-shadow: 0.1em 0.4em 0.8em rgba(0, 0, 0, 0.2);
+    animation: float 5s infinite ease-in-out, colorChange 3s infinite;
+}
+
+@keyframes float {
+    0% { transform: translateX(0%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+}
+
+@media (min-width: 1480px) {
+    .logo {
+        width: 64px;
+        height: auto;
+        position: fixed;
+        top: 6px;
+        left: calc((100vw - 1480px) / 2 + 1%);
+        z-index: 1000;
+        border-radius: 50%;
+        box-shadow: 0.1em 0.4em 0.8em rgba(0, 0, 0, 0.2);
+        animation: float 5s infinite ease-in-out, colorChange 3s infinite;
+    }
+}
+
+
+
+@media (min-width: 1480px) {
+    .container {
+        display: block;
+        width: 100%;
+        max-width: 1480px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 10;
+    }
+}
+
+@media (max-width: 1479px) {
+    .container {
+        display: block;
+        width: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+}
+
+
+
+
+.ad-left {
+    position: fixed;
+    top: 0;
+    width: calc((100vw - 1480px) / 2);
+    height: 100%;
+    background-color: #eaeaea;
+    z-index: 1;
+}
+
+.ad-right {
+    position: fixed;
+    top: 0;
+    width: calc((100vw - 1480px) / 2);
+    height: 100%;
+    background-color: #eaeaea;
+    z-index: 1;
+}
+
+.ad-left {
+left: 0.3%;
+}
+
+.ad-right {
+right: 0.3%;
+}
+
+
+.ad-left img, .ad-right img {
+    width: calc((100vw - 1480px) / 2);
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 1480px) {
+    .ad-left, .ad-right {
+        display: none;
+    }
+}
+
+
+.header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 40%;
+    margin: 0.7% ;
+    background-color: #f5f5f5;
+    border-bottom: 0.3em solid #ddd;
+}
+
+
+

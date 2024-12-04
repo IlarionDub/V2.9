@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "json-server": "^1.0.0-beta.3",
+    "jwt-decode": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/json-server": "^0.14.7"
+  },
+  "scripts": {
+    "start": "npx json-server --watch db.json --port 3000"
+  }
+}
