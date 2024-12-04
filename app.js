@@ -67,14 +67,12 @@ async function handleCredentialResponse(response) {
 
 
 
-    loggedInUser = {
-      name: data.name,
-        gmail: data.gmail,
-    };
+    loggedInUser = data.name;
+        
 
 
     console.log("Logged in as:", loggedInUser);
-    document.getElementById("loggedInUser").innerText = `${loggedInUser.name}`;
+    document.getElementById("loggedInUser").innerText = `${loggedInUser}`;
     updateUserUI();
 }
 
