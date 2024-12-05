@@ -82,6 +82,8 @@ async function handleCredentialResponse(response) {
         }
 
         // Викликаємо оновлення UI
+        await saveToLocalStorage();
+
         updateUserUI();
 
     } catch (error) {
