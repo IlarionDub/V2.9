@@ -14,30 +14,26 @@ let users1 = JSON.parse(localStorage.getItem("users1")) || [
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        // Завантажуємо збереженого користувача
         const savedUser = localStorage.getItem("loggedInUser");
         let userChoice = true;
 
         if (savedUser) {
-            // Якщо є збережений користувач, питаємо, чи залишатися залогіненим
             userChoice = confirm(`Do you want to stay logged in as ${JSON.parse(savedUser)}?`);
 
             if (userChoice) {
-                loggedInUser = JSON.parse(savedUser); // Відновлюємо статус користувача
+                loggedInUser = JSON.parse(savedUser); 
                 console.log("User chose to stay logged in:", loggedInUser);
             } else {
-                loggedInUser = null; // Скидаємо статус
+                loggedInUser = null; 
                 localStorage.removeItem("loggedInUser");
                 console.log("User chose to log out. Defaulting to 'User'.");
             }
         } else {
-            // Якщо збереженого користувача немає, встановлюємо статус як "User"
             loggedInUser = null;
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
             console.log("No logged-in user found. Defaulting to 'User'.");
         }
 
-        // Завантажуємо інші дані
         posts = (await syncFromServer('posts')) || [];
         users = (await syncFromServer('users')) || [];
 
@@ -45,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Users loaded:", users);
 
         await setupRouter();
-        updateUserUI(); // Оновлюємо інтерфейс
+        updateUserUI(); 
     } catch (error) {
         console.error("Error during initialization:", error);
     }
@@ -66,24 +62,19 @@ async function addOrUpdateData(dataType, newData) {
 }
 async function handleCredentialResponse(response) {
     try {
-        // Декодуємо JWT, отримуємо дані
         const data = jwt_decode(response.credential);
         console.log("Decoded JWT data:", data);
 
-        // Зберігаємо лише ім'я в loggedInUser
         loggedInUser = data.name;
 
         console.log("Logged in as:", loggedInUser);
 
-        // Оновлюємо текст на сторінці
         const loggedInUserSpan = document.getElementById("loggedInUser");
         if (loggedInUserSpan) {
             loggedInUserSpan.innerText = `Logged in as: ${loggedInUser}`;
         }
 
-        // Викликаємо оновлення UI
         await saveToLocalStorage();
-
         updateUserUI();
 
     } catch (error) {
@@ -104,12 +95,10 @@ function prefillAuthor() {
 
 async function syncToServer(dataType, dataArray) {
     try {
-        // Завантажуємо всі існуючі записи з сервера
         const response = await fetch(`${BASE_URL}/${dataType}`);
         const existingData = await response.json();
 
         for (const item of dataArray) {
-            // Перевіряємо, чи існує запис із такими самими властивостями (окрім ID)
             const existingItem = existingData.find(existing => {
                 if (dataType === 'posts') {
                     return (
@@ -131,14 +120,12 @@ async function syncToServer(dataType, dataArray) {
             });
 
             if (existingItem) {
-                // Якщо запис знайдено, видаляємо його
                 await fetch(`${BASE_URL}/${dataType}/${existingItem.id}`, {
                     method: 'DELETE',
                 });
                 console.log(`Deleted duplicate ${dataType.slice(0, -1)} from server:`, existingItem);
             }
 
-            // Додаємо новий запис
             await fetch(`${BASE_URL}/${dataType}`, {
                 method: 'POST',
                 headers: {
@@ -154,45 +141,34 @@ async function syncToServer(dataType, dataArray) {
     } catch (error) {
         console.error(`Failed to sync ${dataType} to server:`, error);
 
-        // Якщо сервер недоступний, лише оновлюємо локальне сховище
         localStorage.setItem(dataType, JSON.stringify(dataArray));
     }
     updateUserUI();
 }
 
 
-// Функція для отримання даних із сервера
 async function syncFromServer(dataType) {
     try {
-        // Підключення до сервера
         const response = await fetch(`${BASE_URL}/${dataType}`);
         const data = await response.json();
 
         console.log(`${dataType} synced from server:`, data);
 
-        // Зберігаємо отримані дані в localStorage
         localStorage.setItem(dataType, JSON.stringify(data));
         return data;
     } catch (error) {
         console.error(`Error fetching ${dataType}:`, error.message);
 
-        // Якщо сервер недоступний, використовуємо дані з localStorage
         const cachedData = localStorage.getItem(dataType);
         if (cachedData) {
             console.warn(`Using cached ${dataType} data`);
             return JSON.parse(cachedData);
         }
 
-        // Якщо кеш недоступний, повертаємо порожній масив
         console.warn(`No cached data available for ${dataType}.`);
         return [];
     }
 }
-
-
-
-
-// Запуск автоматичної синхронізації
 
 
 
@@ -231,11 +207,9 @@ async function handleRouteChange() {
 
 async function saveToLocalStorage() {
     try {
-        // Оновлюємо локальне сховище
         localStorage.setItem('posts', JSON.stringify(posts));
         localStorage.setItem('users', JSON.stringify(users));
 
-        // Синхронізуємо дані з сервером
         await syncToServer('posts', posts);
         await syncToServer('users', users);
 
@@ -301,30 +275,26 @@ function loadInitialPage() {
 }
 
 
-// Перехід до наступного посту
 function showNextPost() {
     if (currentPostIndex < posts.length - 1) {
         currentPostIndex++;
         showPost(currentPostIndex);
     }
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 
 }
 
-// Перехід до попереднього посту
 function showPreviousPost() {
     if (currentPostIndex > 0) {
         currentPostIndex--;
         showPost(currentPostIndex);
     }
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI();
 
 }
 
-// Форма для додавання/редагування посту
 
 
-// Обробка завантаження зображення
 function handleImageUpload(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -338,11 +308,9 @@ function handleImageUpload(event) {
     if (file) {
         reader.readAsDataURL(file);
     }
-    updateUserUI(); // Оновлення кнопок авторизації
-
+    updateUserUI(); 
 }
 
-// Додавання нового посту
 async function addPost(event) {
     event.preventDefault();
     const title = document.getElementById("title").value;
@@ -353,19 +321,18 @@ async function addPost(event) {
         title,
         content,
         image,
-        date: formatDate(new Date()), // Додаємо дату у форматі "день/місяць/рік"
-        author: loggedInUser || "User", // Додаємо автора
+        date: formatDate(new Date()),
+        author: loggedInUser || "User",
         comments: []
     });
     await saveToLocalStorage();
     currentPostIndex = posts.length - 1;
     showPost(currentPostIndex);
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 
 }
 
 
-// Оновлення посту
 async function updatePost(event) {
     event.preventDefault();
     const title = document.getElementById("title").value;
@@ -375,7 +342,7 @@ async function updatePost(event) {
     posts[currentPostIndex] = {...posts[currentPostIndex], title, content, image};
     await saveToLocalStorage();
     showPost(currentPostIndex);
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 
 }
 
@@ -428,11 +395,10 @@ function loadPosts() {
 
 
     document.addEventListener("DOMContentLoaded", () => {
-        loadInitialPage(); // Завантажити стартове вікно
-        updateUserUI(); // Оновлення кнопок авторизації
+        loadInitialPage(); 
+        updateUserUI(); 
     });
-    updateUserUI(); // Оновлення кнопок авторизації
-
+    updateUserUI(); 
 }
 
 function scrollToTop() {
@@ -443,7 +409,6 @@ function showPost(index) {
     const app = document.getElementById("app");
     const post = posts[index];
 
-    // Вибираємо коментарі для поточної сторінки
     const commentsToShow = post.comments.slice(
         currentCommentPage * ITEMS_PER_PAGE,
         (currentCommentPage + 1) * ITEMS_PER_PAGE
@@ -520,7 +485,6 @@ function showPost(index) {
 async function showPostForm(isEdit = false, postIndex = null) {
     const app = document.getElementById("app");
 
-    // Перевіряємо, чи існує `app`
     if (!app) {
         console.error("Cannot find element with ID 'app'.");
         return;
@@ -564,7 +528,6 @@ async function showPostForm(isEdit = false, postIndex = null) {
         <button class="cancel" onclick="loadPosts()">Cancel</button>
     `;
 
-    // Додаємо значення для редагування (якщо є)
     document.getElementById("title").value = post.title;
     document.getElementById("content").value = post.content;
 
@@ -574,10 +537,9 @@ async function showPostForm(isEdit = false, postIndex = null) {
         previewImage.style.display = "block";
     }
 
-    // Прив'язуємо обробник для форми
     const postForm = document.getElementById("postForm");
     postForm.addEventListener("submit", (event) => {
-        event.preventDefault(); // Зупиняємо стандартну поведінку
+        event.preventDefault(); 
 
         if (isEdit) {
             updatePost(event);
@@ -586,10 +548,9 @@ async function showPostForm(isEdit = false, postIndex = null) {
         }
     });
 
-    // Додаємо обробник для завантаження зображення
     document.getElementById("imageInput").addEventListener("change", handleImageUpload);
 
-    updateUserUI(); // Оновлюємо кнопки авторизації
+    updateUserUI(); 
 }
 
 
@@ -602,8 +563,8 @@ function formatDate(date) {
 }
 
 
-const ITEMS_PER_PAGE = 10; // Кількість коментарів на сторінку
-let currentCommentPage = 0; // Індекс поточної сторінки коментарів
+const ITEMS_PER_PAGE = 10; 
+let currentCommentPage = 0; 
 
 
 async function addComment(event) {
@@ -614,21 +575,19 @@ async function addComment(event) {
         return;
     }
 
-    const author = loggedInUser || "User"; // Використовуємо авторизованого користувача або "User"
+    const author = loggedInUser || "User"; 
     const text = document.getElementById("commentText").value;
 
-    // Додаємо новий коментар до поточного посту
     posts[currentPostIndex].comments.push({
         author,
         text,
-        date: formatDate(new Date()) // Додаємо дату
+        date: formatDate(new Date()) 
     });
 
     await saveToLocalStorage();
 
-    // Оновлюємо відображення посту, залишаючи на поточній сторінці коментарів
     showPost(currentPostIndex);
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 
 }
 
@@ -639,7 +598,7 @@ function showNextComments() {
         currentCommentPage++;
         showPost(currentPostIndex);
     }
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 
 }
 
@@ -648,14 +607,13 @@ function showPreviousComments() {
         currentCommentPage--;
         showPost(currentPostIndex);
     }
-    updateUserUI(); // Оновлення кнопок авторизації
-
+    updateUserUI(); 
 }
 
 
 function renderCommentPagination(totalComments) {
     const totalPages = Math.ceil(totalComments / ITEMS_PER_PAGE);
-    if (totalPages <= 1) return ""; // Якщо лише одна сторінка, кнопки не потрібні
+    if (totalPages <= 1) return ""; 
 
     return `
         <div class="pagination">
@@ -717,14 +675,13 @@ function showLoginForm() {
     const togglePasswordButton1 = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("loginPassword");
 
-    // Додаємо обробник для кнопки "ока"
     togglePasswordButton1.addEventListener("click", () => {
         const isPasswordVisible = passwordInput.type === "text";
         passwordInput.type = isPasswordVisible ? "password" : "text";
         togglePasswordButton1.textContent = isPasswordVisible ? "👁️" : "🙈";
     });
 
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 }
 
 async function login(event) {
@@ -755,14 +712,12 @@ function updateUserUI() {
     const logoutButton = document.getElementById("logoutButton");
     const loggedInUserSpan = document.getElementById("loggedInUser");
 
-    // Оновлення стану користувача
     if (loggedInUser) {
         loginButton?.classList.add("hidden");
         logoutButton?.classList.remove("hidden");
         loggedInUserSpan?.classList.remove("hidden");
         loggedInUserSpan.innerText = `${loggedInUser}`;
 
-        // Якщо користувач — адміністратор, додаємо кнопку "Admin Panel"
         if (isAdmin(loggedInUser)) {
             let adminButton = document.getElementById("adminPanelButton");
             if (!adminButton) {
@@ -770,15 +725,13 @@ function updateUserUI() {
                 adminButton.id = "adminPanelButton";
                 adminButton.innerText = "Admin Panel";
 
-                // Додаємо обробник події для кнопки
                 adminButton.addEventListener("click", async () => {
                     try {
-                        await showUserList(); // Використовуємо await для очікування завершення showUserList
+                        await showUserList(); 
                     } catch (error) {
                         console.error("Failed to show user list:", error);
                     }                });
 
-                // Додаємо кнопку в header
                 document.querySelector(".header").appendChild(adminButton);
             }
         }
@@ -792,14 +745,12 @@ function updateUserUI() {
         if (adminButton) {
             adminButton.remove();
         }
-        // Видаляємо кнопку "Admin Panel", якщо користувач вийшов
     }
 
 }
 
 
 
-// Вихід
 async function logout() {
     loggedInUser = null;
     await saveToLocalStorage();
@@ -857,7 +808,6 @@ async function showRegisterForm() {
         <button class="cancel" onclick="loadPosts()">Cancel</button>
     `;
 
-    // Додаємо обробник для кнопки "ока"
     const togglePasswordButton = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("registerPassword");
 
@@ -867,7 +817,7 @@ async function showRegisterForm() {
         togglePasswordButton.textContent = isPasswordVisible ? "👁️" : "🙈";
     });
     await saveToLocalStorage();
-    updateUserUI(); // Оновлення кнопок авторизації
+    updateUserUI(); 
 }
 
 
