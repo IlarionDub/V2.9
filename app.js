@@ -21,10 +21,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             userChoice = confirm(`Do you want to stay logged in as ${JSON.parse(savedUser)}?`);
 
             if (userChoice) {
-                loggedInUser = JSON.parse(savedUser); 
+                loggedInUser = JSON.parse(savedUser);
                 console.log("User chose to stay logged in:", loggedInUser);
             } else {
-                loggedInUser = null; 
+                loggedInUser = null;
                 localStorage.removeItem("loggedInUser");
                 console.log("User chose to log out. Defaulting to 'User'.");
             }
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Users loaded:", users);
 
         await setupRouter();
-        updateUserUI(); 
+        updateUserUI();
     } catch (error) {
         console.error("Error during initialization:", error);
     }
@@ -74,7 +74,8 @@ async function handleCredentialResponse(response) {
             loggedInUserSpan.innerText = `Logged in as: ${loggedInUser}`;
         }
 
-        await saveToLocalStorage();
+        localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+        await syncToServer();
         updateUserUI();
 
     } catch (error) {
@@ -280,7 +281,7 @@ function showNextPost() {
         currentPostIndex++;
         showPost(currentPostIndex);
     }
-    updateUserUI(); 
+    updateUserUI();
 
 }
 
@@ -308,7 +309,7 @@ function handleImageUpload(event) {
     if (file) {
         reader.readAsDataURL(file);
     }
-    updateUserUI(); 
+    updateUserUI();
 }
 
 async function addPost(event) {
@@ -328,7 +329,7 @@ async function addPost(event) {
     await saveToLocalStorage();
     currentPostIndex = posts.length - 1;
     showPost(currentPostIndex);
-    updateUserUI(); 
+    updateUserUI();
 
 }
 
@@ -342,7 +343,7 @@ async function updatePost(event) {
     posts[currentPostIndex] = {...posts[currentPostIndex], title, content, image};
     await saveToLocalStorage();
     showPost(currentPostIndex);
-    updateUserUI(); 
+    updateUserUI();
 
 }
 
@@ -395,10 +396,10 @@ function loadPosts() {
 
 
     document.addEventListener("DOMContentLoaded", () => {
-        loadInitialPage(); 
-        updateUserUI(); 
+        loadInitialPage();
+        updateUserUI();
     });
-    updateUserUI(); 
+    updateUserUI();
 }
 
 function scrollToTop() {
@@ -539,7 +540,7 @@ async function showPostForm(isEdit = false, postIndex = null) {
 
     const postForm = document.getElementById("postForm");
     postForm.addEventListener("submit", (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         if (isEdit) {
             updatePost(event);
@@ -550,7 +551,7 @@ async function showPostForm(isEdit = false, postIndex = null) {
 
     document.getElementById("imageInput").addEventListener("change", handleImageUpload);
 
-    updateUserUI(); 
+    updateUserUI();
 }
 
 
@@ -563,8 +564,8 @@ function formatDate(date) {
 }
 
 
-const ITEMS_PER_PAGE = 10; 
-let currentCommentPage = 0; 
+const ITEMS_PER_PAGE = 10;
+let currentCommentPage = 0;
 
 
 async function addComment(event) {
@@ -575,19 +576,19 @@ async function addComment(event) {
         return;
     }
 
-    const author = loggedInUser || "User"; 
+    const author = loggedInUser || "User";
     const text = document.getElementById("commentText").value;
 
     posts[currentPostIndex].comments.push({
         author,
         text,
-        date: formatDate(new Date()) 
+        date: formatDate(new Date())
     });
 
     await saveToLocalStorage();
 
     showPost(currentPostIndex);
-    updateUserUI(); 
+    updateUserUI();
 
 }
 
@@ -598,7 +599,7 @@ function showNextComments() {
         currentCommentPage++;
         showPost(currentPostIndex);
     }
-    updateUserUI(); 
+    updateUserUI();
 
 }
 
@@ -607,13 +608,13 @@ function showPreviousComments() {
         currentCommentPage--;
         showPost(currentPostIndex);
     }
-    updateUserUI(); 
+    updateUserUI();
 }
 
 
 function renderCommentPagination(totalComments) {
     const totalPages = Math.ceil(totalComments / ITEMS_PER_PAGE);
-    if (totalPages <= 1) return ""; 
+    if (totalPages <= 1) return "";
 
     return `
         <div class="pagination">
@@ -681,7 +682,7 @@ function showLoginForm() {
         togglePasswordButton1.textContent = isPasswordVisible ? "👁️" : "🙈";
     });
 
-    updateUserUI(); 
+    updateUserUI();
 }
 
 async function login(event) {
@@ -727,7 +728,7 @@ function updateUserUI() {
 
                 adminButton.addEventListener("click", async () => {
                     try {
-                        await showUserList(); 
+                        await showUserList();
                     } catch (error) {
                         console.error("Failed to show user list:", error);
                     }                });
@@ -817,7 +818,7 @@ async function showRegisterForm() {
         togglePasswordButton.textContent = isPasswordVisible ? "👁️" : "🙈";
     });
     await saveToLocalStorage();
-    updateUserUI(); 
+    updateUserUI();
 }
 
 
