@@ -4,7 +4,7 @@ let currentPostIndex = 0;
 let loggedInUser = null;
 const BASE_URL = 'http://localhost:3000';
 
-    
+     
 
 let users1 = JSON.parse(localStorage.getItem("users1")) || [
     { name: "Admin", email: "admin@gmail.com", password: "Admin123", role: "admin" }
