@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } else {
             // Якщо збереженого користувача немає, встановлюємо статус як "User"
-            loggedInUser = "User";
+            loggedInUser = null;
             localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
             console.log("No logged-in user found. Defaulting to 'User'.");
         }
