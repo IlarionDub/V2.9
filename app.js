@@ -14,21 +14,26 @@ let users1 = JSON.parse(localStorage.getItem("users1")) || [
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
+        // Завантажуємо збереженого користувача
         const savedUser = localStorage.getItem("loggedInUser");
-        let userChoice = true; 
+        let userChoice = true;
 
         if (savedUser) {
+            // Якщо є збережений користувач, питаємо, чи залишатися залогіненим
             userChoice = confirm(`Do you want to stay logged in as ${JSON.parse(savedUser)}?`);
 
             if (userChoice) {
-                loggedInUser = JSON.parse(savedUser);
+                loggedInUser = JSON.parse(savedUser); // Відновлюємо статус користувача
                 console.log("User chose to stay logged in:", loggedInUser);
             } else {
-                loggedInUser = null;
+                loggedInUser = null; // Скидаємо статус
+                localStorage.removeItem("loggedInUser");
                 console.log("User chose to log out. Defaulting to 'User'.");
             }
         } else {
-            loggedInUser = null;
+            // Якщо збереженого користувача немає, встановлюємо статус як "User"
+            loggedInUser = "User";
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
             console.log("No logged-in user found. Defaulting to 'User'.");
         }
 
@@ -40,7 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Users loaded:", users);
 
         await setupRouter();
-        updateUserUI();
+        updateUserUI(); // Оновлюємо інтерфейс
     } catch (error) {
         console.error("Error during initialization:", error);
     }
