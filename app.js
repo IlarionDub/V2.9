@@ -994,7 +994,7 @@ async function showUserList() {
                 ${posts.map(post => `
                     <li>
                         Title: ${post.title}
-                        <button onclick="deletePost('${post.id}')">Delete</button>
+                        <button onclick="deletePost1('${post.id}')">Delete</button>
                     </li>
                 `).join('')}
             </ul>
@@ -1032,7 +1032,7 @@ async function deleteUser(userId) {
 
 
 
-async function deletePost(postId) {
+async function deletePost1(postId) {
     if (!isAdmin()) {
         alert("Access denied. Only admins can delete posts.");
         return;
