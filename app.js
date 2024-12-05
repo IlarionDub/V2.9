@@ -4,31 +4,17 @@ let currentPostIndex = 0;
 let loggedInUser = null;
 const BASE_URL = 'http://localhost:3000';
 
-
+    
 
 let users1 = JSON.parse(localStorage.getItem("users1")) || [
     { name: "Admin", email: "admin@gmail.com", password: "Admin123", role: "admin" }
 ];
 
 
+
 document.addEventListener("DOMContentLoaded", async () => {
     try {
-        const isFirstRun = localStorage.getItem("isFirstRun");
 
-        if (!isFirstRun) {
-            console.log("First launch logic executed");
-            localStorage.setItem("isFirstRun", "true");
-
-            await firstLaunchLogic();
-        } else {
-            console.log("Subsequent launch logic executed");
-
-            const savedUser = localStorage.getItem("loggedInUser");
-            if (savedUser) {
-                loggedInUser = JSON.parse(savedUser);
-                console.log("Restored logged in user:", loggedInUser);
-            }
-        }
 
         posts = (await syncFromServer('posts')) || [];
         users = (await syncFromServer('users')) || [];
@@ -42,14 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Error during initialization:", error);
     }
-    updateUserUI();
 });
 
-async function firstLaunchLogic() {
-    console.log("Executing first-launch setup...");
-    loadInitialPage();
-    await logout();
-}
 
 async function addOrUpdateData(dataType, newData) {
     const existingData = JSON.parse(localStorage.getItem(dataType)) || [];
@@ -254,7 +234,11 @@ function loadHomePage() {
           <button onclick="window.location.hash = '#addPost'">Add Post</button>
           <button onclick="window.location.hash = '#posts'">Posts</button>
           <button onclick="window.location.hash = '#register'">Register</button>
-          <button onclick="window.location.hash = '#login'">Login</button>
+               ${loggedInUser ? `
+            <button onclick="window.location.hash = '#logout'">Logout</button>
+            ` : `
+            <button onclick="window.location.hash = '#login'">Login</button>
+            `}
 
         </div>
         </header>
@@ -276,7 +260,11 @@ function loadInitialPage() {
           <button onclick="window.location.hash = '#addPost'">Add Post</button>
           <button onclick="window.location.hash = '#posts'">Posts</button>
           <button onclick="window.location.hash = '#register'">Register</button>
-          <button onclick="window.location.hash = '#login'">Login</button>
+           ${loggedInUser ? `
+            <button onclick="window.location.hash = '#logout'">Logout</button>
+            ` : `
+            <button onclick="window.location.hash = '#login'">Login</button>
+        `}
 
         </div>
         </header>
