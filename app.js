@@ -14,8 +14,25 @@ let users1 = JSON.parse(localStorage.getItem("users1")) || [
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
+        const savedUser = localStorage.getItem("loggedInUser");
+        let userChoice = true; 
 
+        if (savedUser) {
+            userChoice = confirm(`Do you want to stay logged in as ${JSON.parse(savedUser)}?`);
 
+            if (userChoice) {
+                loggedInUser = JSON.parse(savedUser);
+                console.log("User chose to stay logged in:", loggedInUser);
+            } else {
+                loggedInUser = null;
+                console.log("User chose to log out. Defaulting to 'User'.");
+            }
+        } else {
+            loggedInUser = null;
+            console.log("No logged-in user found. Defaulting to 'User'.");
+        }
+
+        // Завантажуємо інші дані
         posts = (await syncFromServer('posts')) || [];
         users = (await syncFromServer('users')) || [];
 
@@ -23,12 +40,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Users loaded:", users);
 
         await setupRouter();
-        loadHomePage();
         updateUserUI();
     } catch (error) {
         console.error("Error during initialization:", error);
     }
 });
+
+
 
 
 async function addOrUpdateData(dataType, newData) {
