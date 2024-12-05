@@ -1029,3 +1029,32 @@ async function deleteUser(userId) {
         alert("An error occurred while deleting the user.");
     }
 }
+
+
+
+async function deletePost(postId) {
+    if (!isAdmin()) {
+        alert("Access denied. Only admins can delete posts.");
+        return;
+    }
+
+    const confirmDelete = confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+
+    try {
+        // Видалення з сервера
+        await fetch(`${BASE_URL}/posts/${postId}`, {
+            method: "DELETE",
+        });
+
+        // Видалення з локального сховища
+        posts = posts.filter(post => post.id !== postId);
+        localStorage.setItem("posts", JSON.stringify(posts));
+
+        alert("Post deleted successfully.");
+        await showUserList();
+    } catch (error) {
+        console.error("Failed to delete post:", error);
+        alert("An error occurred while deleting the post.");
+    }
+}
