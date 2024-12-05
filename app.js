@@ -471,6 +471,7 @@ function showPost(index) {
             ` : ""}
         </div>
         <footer>
+            <p>Page ${index + 1} of ${posts.length}</p> <!-- Поточна сторінка -->
             <button ${index === 0 ? "disabled" : ""} onclick="showPreviousPost(); scrollToTop();">Previous</button>
             <button ${index === posts.length - 1 ? "disabled" : ""} onclick="showNextPost(); scrollToTop();">Next</button>
             <button onclick="window.location.hash = '#addPost';  scrollToTop();">Add Post</button>
