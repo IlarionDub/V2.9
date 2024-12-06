@@ -175,7 +175,7 @@ async function syncFromServer(dataType) {
 
 async function setupRouter() {
     window.addEventListener('hashchange', handleRouteChange);
-    await handleRouteChange(); // Викликаємо, щоб завантажити перший маршрут
+    await handleRouteChange(); 
 }
 
 async function handleRouteChange() {
@@ -967,12 +967,10 @@ async function deleteUser(userId) {
     if (!confirmDelete) return;
 
     try {
-        // Видалення з сервера
         await fetch(`${BASE_URL}/users/${userId}`, {
             method: "DELETE",
         });
 
-        // Видалення з локального сховища
         users = users.filter(user => user.id !== userId);
         localStorage.setItem("users", JSON.stringify(users));
 
@@ -996,12 +994,10 @@ async function deletePost1(postId) {
     if (!confirmDelete) return;
 
     try {
-        // Видалення з сервера
         await fetch(`${BASE_URL}/posts/${postId}`, {
             method: "DELETE",
         });
 
-        // Видалення з локального сховища
         posts = posts.filter(post => post.id !== postId);
         localStorage.setItem("posts", JSON.stringify(posts));
 
