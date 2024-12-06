@@ -117,35 +117,44 @@ async function syncToServer(dataType, dataArray) {
                     );
                 }
                 return false;
-
             });
 
             if (existingItem) {
-                await fetch(`${BASE_URL}/${dataType}/${existingItem.id}`, {
-                    method: 'DELETE',
+                const isNewer = new Date(item.date) > new Date(existingItem.date);
+
+                if (isNewer) {
+                    await fetch(`${BASE_URL}/${dataType}/${existingItem.id}`, {
+                        method: 'DELETE',
+                    });
+                    console.log(`Deleted older ${dataType.slice(0, -1)} from server:`, existingItem);
+
+                    await fetch(`${BASE_URL}/${dataType}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(item),
+                    });
+                    console.log(`Added newer ${dataType.slice(0, -1)} to server:`, item);
+                } else {
+                    console.log(`Existing ${dataType.slice(0, -1)} is up-to-date:`, existingItem);
+                }
+            } else {
+                await fetch(`${BASE_URL}/${dataType}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(item),
                 });
-                console.log(`Deleted duplicate ${dataType.slice(0, -1)} from server:`, existingItem);
+                console.log(`Added new ${dataType.slice(0, -1)} to server:`, item);
             }
-
-            await fetch(`${BASE_URL}/${dataType}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(item),
-            });
-            console.log(`Added new ${dataType.slice(0, -1)} to server:`, item);
         }
-
-        // Оновлюємо локальне сховище після успішної синхронізації
-        localStorage.setItem(dataType, JSON.stringify(dataArray));
     } catch (error) {
-        console.error(`Failed to sync ${dataType} to server:`, error);
-
-        localStorage.setItem(dataType, JSON.stringify(dataArray));
+        console.error(`Error syncing ${dataType}:`, error);
     }
-    updateUserUI();
 }
+
 
 
 async function syncFromServer(dataType) {
